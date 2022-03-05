@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: node-agent
+  namespace: kube-system
+  labels:
+    app: node-agent
+spec:
+  template:
+    metadata:
+      labels:
+        name: node-agent
+    spec:
+      hostNetwork: true
+      containers:
+      - name: node-agent
+        image: 586356145165.dkr.ecr.ap-southeast-1.amazonaws.com/nodeagent:2.0
+        command:
+        - /bin/bash
+        - -c
+        - /data/startup.sh --uwsgi-threads 8 --bucket_name srcn-dev-app
+        volumeMounts:
+        - name: app
+          mountPath: /data/app
+        - name: log
+          mountPath: /var/log
+      volumes:
+      - name: app
+        hostPath:
+          path: /data/app
+      - name: log
+        hostPath:
+          path: /var/log/containers
+
+

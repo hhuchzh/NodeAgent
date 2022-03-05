@@ -1,0 +1,4 @@
+[default]
+region = cn-northwest-1
+output = json
+
